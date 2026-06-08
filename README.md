@@ -101,6 +101,6 @@ El sistema permite obtener:
 El instructivo detallado para ejecutar la aplicación localmente se encuentra en la carpeta `docs`
 
 ```text
-docs/instructivo.md
+docs/Instructivo - Obligatorio 2026.md
 ```
 
