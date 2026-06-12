@@ -97,16 +97,16 @@ SELECT * FROM disciplinas;
 Abrir la terminal de PyCharm en la raíz del proyecto y ejecutar:
 
 ```bash
-py -m pip install -r requirements.txt
+py -m pip install -r instalador-mysql.txt
 ```
 
 Si `pip` está configurado directamente, también puede utilizarse:
 
 ```bash
-pip install -r requirements.txt
+pip install -r instalador-mysql.txt
 ```
 
-El archivo `requirements.txt` contiene la librería necesaria para conectar Python con MySQL.
+El archivo `instalador-mysql.txt` contiene la librería necesaria para conectar Python con MySQL.
 
 ---
 
@@ -124,7 +124,7 @@ Dentro de ese archivo, modificar la contraseña de MySQL según corresponda:
 conexion = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="PASSWORD",
+    password="password",
     database="gestion_actividades_deportivas"
 )
 ```
@@ -132,7 +132,7 @@ conexion = mysql.connector.connect(
 Cada usuario debe reemplazar:
 
 ```text
-PASSWORD
+password
 ```
 
 por la contraseña local de su instalación de MySQL.
