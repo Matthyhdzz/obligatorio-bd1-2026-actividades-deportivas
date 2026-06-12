@@ -154,6 +154,27 @@ def agregar_estudiante():
         print("El ID de carrera debe ser numérico.")
         return
 
+    def documento_valido(documento):
+        return documento.isdigit()
+
+    def nombre_valido(nombre):
+        return nombre.isalpha()
+
+    def apellido_valido(apellido):
+        return apellido.isalpha()
+
+    if not documento_valido(documento):
+        print("El documento tiene que ser numerico")
+        return
+
+    if not nombre_valido(nombre):
+        print("El nombre tiene que ser numerico")
+        return
+
+    if not apellido_valido(apellido):
+        print("El apellido tiene que ser numerico")
+        return
+
     if documento == "" or nombre == "" or apellido == "" or correo == "":
         print("Todos los campos son obligatorios.")
         return

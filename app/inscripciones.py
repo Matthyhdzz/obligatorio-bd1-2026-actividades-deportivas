@@ -228,7 +228,7 @@ def inscribir_estudiante():
         conexion.commit()
 
         if estado_inscripcion == "confirmada":
-            print("Inscripción realizada correctamente. Estado: confirmada.")
+            print("Inscripción realizada correctamente.")
         else:
             print("La actividad no tiene cupos disponibles. El estudiante quedó en lista de espera.")
 

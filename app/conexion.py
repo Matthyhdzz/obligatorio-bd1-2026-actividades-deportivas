@@ -1,5 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
+from conexion_admin import obtener_conexion
 
 
 def obtener_conexion():
@@ -7,7 +8,7 @@ def obtener_conexion():
         conexion = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="password",
+            password="adminpassword",
             database="gestion_actividades_deportivas"
         )
 
