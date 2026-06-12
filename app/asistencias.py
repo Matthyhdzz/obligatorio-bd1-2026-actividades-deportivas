@@ -7,7 +7,7 @@ ESTADOS_ASISTENCIA = ["presente", "ausente"]
 
 
 def mostrar_menu_asistencias():
-    print("\n===== REGISTRO DE ASISTENCIAS =====")
+    print("\nRegistro de asistencias")
     print("1. Listar asistencias")
     print("2. Registrar asistencia")
     print("3. Modificar asistencia")
@@ -38,12 +38,7 @@ def listar_inscripciones_confirmadas():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                i.id_inscripcion,
-                e.nombre,
-                e.apellido,
-                e.documento,
-                a.nombre AS actividad
+            SELECT i.id_inscripcion,e.nombre,e.apellido,e.documento,a.nombre AS actividad
             FROM inscripciones i
             JOIN estudiantes e ON i.id_estudiante = e.id_estudiante
             JOIN actividades a ON i.id_actividad = a.id_actividad
@@ -81,15 +76,7 @@ def listar_asistencias():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                asi.id_asistencia,
-                asi.fecha,
-                asi.estado,
-                asi.observacion,
-                e.nombre,
-                e.apellido,
-                e.documento,
-                act.nombre AS actividad
+            SELECT asi.id_asistencia,asi.fecha,asi.estado,asi.observacion,e.nombre,e.apellido,e.documento,act.nombre AS actividad
             FROM asistencias asi
             JOIN inscripciones i ON asi.id_inscripcion = i.id_inscripcion
             JOIN estudiantes e ON i.id_estudiante = e.id_estudiante
@@ -124,7 +111,7 @@ def listar_asistencias():
 
 
 def registrar_asistencia():
-    print("\n--- REGISTRAR ASISTENCIA ---")
+    print("\nRegistrar asistencias")
 
     listar_inscripciones_confirmadas()
 
@@ -191,12 +178,7 @@ def registrar_asistencia():
             return
 
         consulta_insert = """
-            INSERT INTO asistencias (
-                id_inscripcion,
-                fecha,
-                estado,
-                observacion
-            )
+            INSERT INTO asistencias (id_inscripcion,fecha,estado,observacion)
             VALUES (%s, %s, %s, %s);
         """
 
@@ -216,7 +198,7 @@ def registrar_asistencia():
 
 
 def modificar_asistencia():
-    print("\n--- MODIFICAR ASISTENCIA ---")
+    print("\nModificar asistencia")
 
     try:
         id_asistencia = int(input("Ingrese ID de asistencia: "))
@@ -247,7 +229,7 @@ def modificar_asistencia():
             cursor.close()
             return
 
-        print("\nDejá vacío el campo si no querés modificarlo.")
+        print("\nDejar vacio en caso de no modificar")
 
         nueva_fecha = input(f"Fecha actual ({asistencia[0]}): ").strip()
         nuevo_estado = input(f"Estado actual ({asistencia[1]}): ").strip().lower()
@@ -291,7 +273,7 @@ def modificar_asistencia():
 
 
 def ver_asistencias_por_actividad_y_fecha():
-    print("\n--- ASISTENCIAS POR ACTIVIDAD Y FECHA ---")
+    print("\n Asistencia por actividad y fecha")
 
     try:
         id_actividad = int(input("Ingrese ID de la actividad: "))
@@ -315,12 +297,7 @@ def ver_asistencias_por_actividad_y_fecha():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                e.documento,
-                e.nombre,
-                e.apellido,
-                asi.estado,
-                asi.observacion
+            SELECT e.documento,e.nombre,e.apellido,asi.estado,asi.observacion
             FROM asistencias asi
             JOIN inscripciones i ON asi.id_inscripcion = i.id_inscripcion
             JOIN estudiantes e ON i.id_estudiante = e.id_estudiante
@@ -335,7 +312,7 @@ def ver_asistencias_por_actividad_y_fecha():
         if len(asistencias) == 0:
             print("No hay asistencias registradas para esa actividad en esa fecha.")
         else:
-            print("\n--- RESULTADO ---")
+            print("\n Resultado")
             for asistencia in asistencias:
                 print(f"Estudiante: {asistencia[1]} {asistencia[2]}")
                 print(f"Documento: {asistencia[0]}")

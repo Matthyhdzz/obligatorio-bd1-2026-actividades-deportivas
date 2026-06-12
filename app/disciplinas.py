@@ -3,7 +3,7 @@ from mysql.connector import Error
 
 
 def mostrar_menu_disciplinas():
-    print("\n===== GESTIÓN DE DISCIPLINAS DEPORTIVAS =====")
+    print("\nGestion de disciplinas")
     print("1. Listar disciplinas")
     print("2. Buscar disciplina por ID")
     print("3. Agregar disciplina")
@@ -34,7 +34,7 @@ def listar_disciplinas():
         if len(disciplinas) == 0:
             print("\nNo hay disciplinas registradas.")
         else:
-            print("\n--- LISTADO DE DISCIPLINAS ---")
+            print("\n Listado de disciplinas")
             for disciplina in disciplinas:
                 print(f"ID: {disciplina[0]}")
                 print(f"Nombre: {disciplina[1]}")
@@ -79,7 +79,7 @@ def buscar_disciplina_por_id():
         if disciplina is None:
             print("\nNo se encontró una disciplina con ese ID.")
         else:
-            print("\n--- DISCIPLINA ENCONTRADA ---")
+            print("\nDisciplina encontrada")
             print(f"ID: {disciplina[0]}")
             print(f"Nombre: {disciplina[1]}")
             print(f"Descripción: {disciplina[2]}")
@@ -95,7 +95,7 @@ def buscar_disciplina_por_id():
 
 
 def agregar_disciplina():
-    print("\n--- AGREGAR DISCIPLINA ---")
+    print("\nAgregar disciplina")
 
     nombre = input("Nombre: ").strip()
     descripcion = input("Descripción: ").strip()
@@ -117,11 +117,7 @@ def agregar_disciplina():
         cursor = conexion.cursor()
 
         consulta = """
-            INSERT INTO disciplinas (
-                nombre,
-                descripcion,
-                estado
-            )
+            INSERT INTO disciplinas (nombre,descripcion,estado)
             VALUES (%s, %s, 'activa');
         """
 
@@ -141,7 +137,7 @@ def agregar_disciplina():
 
 
 def modificar_disciplina():
-    print("\n--- MODIFICAR DISCIPLINA ---")
+    print("\nModificar disciplina")
 
     try:
         id_disciplina = int(input("Ingrese ID de la disciplina a modificar: "))
@@ -203,7 +199,7 @@ def modificar_disciplina():
 
 
 def dar_baja_disciplina():
-    print("\n--- DAR DE BAJA DISCIPLINA ---")
+    print("\nDar disciplina de baja")
 
     try:
         id_disciplina = int(input("Ingrese ID de la disciplina: "))

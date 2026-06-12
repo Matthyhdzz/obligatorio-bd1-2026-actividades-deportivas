@@ -169,12 +169,9 @@ ORDER BY cantidad_actividades DESC, e.apellido, e.nombre;
 Actividades sin inscriptos confirmados
 
 
-SELECT 
-    a.id_actividad,
-    a.nombre AS actividad,
-    a.estado
+SELECT a.id_actividad,a.nombre AS actividad,a.estado
 FROM actividades a
-LEFT JOIN inscripciones i 
+LEFT JOIN inscripciones i
     ON a.id_actividad = i.id_actividad
     AND i.estado = 'confirmada'
 WHERE i.id_inscripcion IS NULL

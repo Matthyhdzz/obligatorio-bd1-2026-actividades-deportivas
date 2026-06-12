@@ -3,7 +3,7 @@ from mysql.connector import Error
 
 
 def mostrar_menu_estudiantes():
-    print("\n===== GESTIÓN DE ESTUDIANTES =====")
+    print("Gestión de estudiantes")
     print("1. Listar estudiantes")
     print("2. Buscar estudiante por documento")
     print("3. Agregar estudiante")
@@ -23,15 +23,7 @@ def listar_estudiantes():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                e.id_estudiante,
-                e.documento,
-                e.nombre,
-                e.apellido,
-                e.correo,
-                c.nombre AS carrera,
-                f.nombre AS facultad,
-                e.estado
+            SELECT e.id_estudiante,e.documento,e.nombre,e.apellido,e.correo,c.nombre AS carrera,f.nombre AS facultad,e.estado
             FROM estudiantes e
             JOIN carreras c ON e.id_carrera = c.id_carrera
             JOIN facultades f ON c.id_facultad = f.id_facultad
@@ -44,7 +36,7 @@ def listar_estudiantes():
         if len(estudiantes) == 0:
             print("\nNo hay estudiantes registrados.")
         else:
-            print("\n--- LISTADO DE ESTUDIANTES ---")
+            print("\nListado de estudiantes")
             for estudiante in estudiantes:
                 print(f"ID: {estudiante[0]}")
                 print(f"Documento: {estudiante[1]}")
@@ -81,15 +73,7 @@ def buscar_estudiante_por_documento():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                e.id_estudiante,
-                e.documento,
-                e.nombre,
-                e.apellido,
-                e.correo,
-                c.nombre AS carrera,
-                f.nombre AS facultad,
-                e.estado
+            SELECT e.id_estudiante,e.documento,e.nombre,e.apellido,e.correo,c.nombre AS carrera,f.nombre AS facultad,e.estado
             FROM estudiantes e
             JOIN carreras c ON e.id_carrera = c.id_carrera
             JOIN facultades f ON c.id_facultad = f.id_facultad
@@ -102,7 +86,7 @@ def buscar_estudiante_por_documento():
         if estudiante is None:
             print("\nNo se encontró un estudiante con ese documento.")
         else:
-            print("\n--- ESTUDIANTE ENCONTRADO ---")
+            print("\nEncontrado")
             print(f"ID: {estudiante[0]}")
             print(f"Documento: {estudiante[1]}")
             print(f"Nombre: {estudiante[2]} {estudiante[3]}")
@@ -131,10 +115,7 @@ def listar_carreras():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                c.id_carrera,
-                c.nombre,
-                f.nombre AS facultad
+            SELECT c.id_carrera,c.nombre,f.nombre AS facultad
             FROM carreras c
             JOIN facultades f ON c.id_facultad = f.id_facultad
             WHERE c.estado = 'activa'
@@ -144,7 +125,7 @@ def listar_carreras():
         cursor.execute(consulta)
         carreras = cursor.fetchall()
 
-        print("\n--- CARRERAS DISPONIBLES ---")
+        print("\nCarreras disponibles")
         for carrera in carreras:
             print(f"{carrera[0]}. {carrera[1]} - {carrera[2]}")
 
@@ -158,7 +139,7 @@ def listar_carreras():
 
 
 def agregar_estudiante():
-    print("\n--- AGREGAR ESTUDIANTE ---")
+    print("\nAgregar estudiante")
 
     documento = input("Documento: ").strip()
     nombre = input("Nombre: ").strip()
@@ -205,14 +186,7 @@ def agregar_estudiante():
             return
 
         consulta = """
-            INSERT INTO estudiantes (
-                documento,
-                nombre,
-                apellido,
-                correo,
-                id_carrera,
-                estado
-            )
+            INSERT INTO estudiantes (documento,nombre,apellido,correo,id_carrera,estado)
             VALUES (%s, %s, %s, %s, %s, 'activo');
         """
 
@@ -232,7 +206,7 @@ def agregar_estudiante():
 
 
 def modificar_estudiante():
-    print("\n--- MODIFICAR ESTUDIANTE ---")
+    print("\nModificar estudiante")
 
     try:
         id_estudiante = int(input("Ingrese ID del estudiante a modificar: "))
@@ -263,7 +237,7 @@ def modificar_estudiante():
             cursor.close()
             return
 
-        print("\nDejá vacío el campo si no querés modificarlo.")
+        print("\nSi no se quiere modificar, dejar vacio")
 
         nuevo_documento = input(f"Documento actual ({estudiante[0]}): ").strip()
         nuevo_nombre = input(f"Nombre actual ({estudiante[1]}): ").strip()
@@ -337,7 +311,7 @@ def modificar_estudiante():
 
 
 def dar_baja_estudiante():
-    print("\n--- DAR DE BAJA ESTUDIANTE ---")
+    print("\nDar de baja")
 
     try:
         id_estudiante = int(input("Ingrese ID del estudiante: "))

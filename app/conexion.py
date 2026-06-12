@@ -7,13 +7,13 @@ def obtener_conexion():
         conexion = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="password",    #Password generica para no comprometer repositorio
+            password="password",
             database="gestion_actividades_deportivas"
         )
 
         if conexion.is_connected():
             return conexion
 
-    except Error as e:
-        print("Error al conectar con la base de datos:", e)
+    except Error:
+        print("Error al conectar con la base de datos:", Error)
         return None

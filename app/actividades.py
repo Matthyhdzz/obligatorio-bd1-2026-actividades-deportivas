@@ -6,7 +6,7 @@ estados_posibles = ["abierta", "cerrada", "finalizada", "cancelada"]
 
 
 def mostrar_menu_actividades():
-    print("\n===== GESTIÓN DE ACTIVIDADES DEPORTIVAS =====")
+    print("\nGestion de actividades")
     print("1. Listar actividades")
     print("2. Buscar actividad por ID")
     print("3. Agregar actividad")
@@ -35,7 +35,7 @@ def listar_disciplinas_activas():
         cursor.execute(consulta)
         disciplinas = cursor.fetchall()
 
-        print("\n--- DISCIPLINAS ACTIVAS ---")
+        print("\nDisciplinas activas")
         for disciplina in disciplinas:
             print(f"{disciplina[0]}. {disciplina[1]}")
 
@@ -68,7 +68,7 @@ def listar_espacios_activos():
         cursor.execute(consulta)
         espacios = cursor.fetchall()
 
-        print("\n--- ESPACIOS ACTIVOS ---")
+        print("\nEspacios activos")
         for espacio in espacios:
             print(f"{espacio[0]}. {espacio[1]} - Capacidad: {espacio[2]}")
 
@@ -92,16 +92,7 @@ def listar_actividades():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                a.id_actividad,
-                a.nombre,
-                d.nombre AS disciplina,
-                e.nombre AS espacio,
-                a.cupo_maximo,
-                a.dia_semana,
-                a.hora_inicio,
-                a.hora_fin,
-                a.estado
+            SELECT a.id_actividad,a.nombre,d.nombre AS disciplina,e.nombre AS espacio,a.cupo_maximo,a.dia_semana,a.hora_inicio,a.hora_fin,a.estado
             FROM actividades a
             JOIN disciplinas d ON a.id_disciplina = d.id_disciplina
             JOIN espacios e ON a.id_espacio = e.id_espacio
@@ -114,7 +105,7 @@ def listar_actividades():
         if len(actividades) == 0:
             print("\nNo hay actividades registradas.")
         else:
-            print("\n--- LISTADO DE ACTIVIDADES ---")
+            print("\nListado de actividades")
             for actividad in actividades:
                 print(f"ID: {actividad[0]}")
                 print(f"Nombre: {actividad[1]}")
@@ -152,16 +143,7 @@ def buscar_actividad_por_id():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                a.id_actividad,
-                a.nombre,
-                d.nombre AS disciplina,
-                e.nombre AS espacio,
-                a.cupo_maximo,
-                a.dia_semana,
-                a.hora_inicio,
-                a.hora_fin,
-                a.estado
+            SELECT a.id_actividad,a.nombre,d.nombre AS disciplina,e.nombre AS espacio,a.cupo_maximo,a.dia_semana,a.hora_inicio,a.hora_fin,a.estado
             FROM actividades a
             JOIN disciplinas d ON a.id_disciplina = d.id_disciplina
             JOIN espacios e ON a.id_espacio = e.id_espacio
@@ -174,7 +156,7 @@ def buscar_actividad_por_id():
         if actividad is None:
             print("\nNo se encontró una actividad con ese ID.")
         else:
-            print("\n--- ACTIVIDAD ENCONTRADA ---")
+            print("\nActividad encontrada")
             print(f"ID: {actividad[0]}")
             print(f"Nombre: {actividad[1]}")
             print(f"Disciplina: {actividad[2]}")
@@ -198,7 +180,7 @@ def validar_estado_actividad(estado):
 
 
 def agregar_actividad():
-    print("\n--- AGREGAR ACTIVIDAD ---")
+    print("\nAgregar actividad")
 
     nombre = input("Nombre de la actividad: ").strip()
 
@@ -279,16 +261,7 @@ def agregar_actividad():
             return
 
         consulta_insert = """
-            INSERT INTO actividades (
-                nombre,
-                id_disciplina,
-                id_espacio,
-                cupo_maximo,
-                dia_semana,
-                hora_inicio,
-                hora_fin,
-                estado
-            )
+            INSERT INTO actividades (nombre,id_disciplina,id_espacio,cupo_maximo,dia_semana,hora_inicio,hora_fin,estado)
             VALUES (%s, %s, %s, %s, %s, %s, %s, 'abierta');
         """
 
@@ -320,7 +293,7 @@ def agregar_actividad():
 
 
 def modificar_actividad():
-    print("\n--- MODIFICAR ACTIVIDAD ---")
+    print("\nModificar actividad")
 
     try:
         id_actividad = int(input("Ingrese ID de la actividad a modificar: "))
@@ -338,14 +311,7 @@ def modificar_actividad():
         cursor = conexion.cursor()
 
         consulta_busqueda = """
-            SELECT 
-                nombre,
-                id_disciplina,
-                id_espacio,
-                cupo_maximo,
-                dia_semana,
-                hora_inicio,
-                hora_fin
+            SELECT nombre,id_disciplina,id_espacio,cupo_maximo,dia_semana,hora_inicio,hora_fin
             FROM actividades
             WHERE id_actividad = %s;
         """
@@ -358,7 +324,7 @@ def modificar_actividad():
             cursor.close()
             return
 
-        print("\nDejá vacío el campo si no querés modificarlo.")
+        print("\nDejar vacio si no se quiere modificar")
 
         nuevo_nombre = input(f"Nombre actual ({actividad[0]}): ").strip()
 
@@ -494,7 +460,7 @@ def modificar_actividad():
 
 
 def cambiar_estado_actividad():
-    print("\n--- CAMBIAR ESTADO DE ACTIVIDAD ---")
+    print("\nCambiar estado")
 
     try:
         id_actividad = int(input("Ingrese ID de la actividad: "))

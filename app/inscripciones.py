@@ -1,9 +1,8 @@
 from conexion import obtener_conexion
 from mysql.connector import Error
 
-
 def mostrar_menu_inscripciones():
-    print("\n===== GESTIÓN DE INSCRIPCIONES =====")
+    print("\nGestion de inscripciones")
     print("1. Listar inscripciones")
     print("2. Inscribir estudiante a actividad")
     print("3. Cancelar inscripción")
@@ -22,14 +21,7 @@ def listar_inscripciones():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                i.id_inscripcion,
-                e.documento,
-                e.nombre,
-                e.apellido,
-                a.nombre AS actividad,
-                i.fecha_inscripcion,
-                i.estado
+            SELECT i.id_inscripcion,e.documento,e.nombre,e.apellido,a.nombre AS actividad,i.fecha_inscripcion,i.estado
             FROM inscripciones i
             JOIN estudiantes e ON i.id_estudiante = e.id_estudiante
             JOIN actividades a ON i.id_actividad = a.id_actividad
@@ -42,7 +34,7 @@ def listar_inscripciones():
         if len(inscripciones) == 0:
             print("\nNo hay inscripciones registradas.")
         else:
-            print("\n--- LISTADO DE INSCRIPCIONES ---")
+            print("\nListado de inscripciones")
             for inscripcion in inscripciones:
                 print(f"ID inscripción: {inscripcion[0]}")
                 print(f"Estudiante: {inscripcion[2]} {inscripcion[3]}")
@@ -81,7 +73,7 @@ def listar_estudiantes_activos():
         cursor.execute(consulta)
         estudiantes = cursor.fetchall()
 
-        print("\n--- ESTUDIANTES ACTIVOS ---")
+        print("\nEstudiantes activos")
         for estudiante in estudiantes:
             print(f"{estudiante[0]}. {estudiante[2]} {estudiante[3]} - Documento: {estudiante[1]}")
 
@@ -105,12 +97,7 @@ def listar_actividades_abiertas():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                a.id_actividad,
-                a.nombre,
-                a.cupo_maximo,
-                COUNT(i.id_inscripcion) AS confirmados,
-                a.estado
+            SELECT a.id_actividad,a.nombre,a.cupo_maximo,COUNT(i.id_inscripcion) AS confirmados,a.estado
             FROM actividades a
             LEFT JOIN inscripciones i 
                 ON a.id_actividad = i.id_actividad
@@ -123,7 +110,7 @@ def listar_actividades_abiertas():
         cursor.execute(consulta)
         actividades = cursor.fetchall()
 
-        print("\n--- ACTIVIDADES ABIERTAS ---")
+        print("\nActividades abiertas")
         for actividad in actividades:
             cupos_disponibles = actividad[2] - actividad[3]
             print(f"{actividad[0]}. {actividad[1]} - Cupo: {actividad[3]}/{actividad[2]} - Disponibles: {cupos_disponibles}")
@@ -138,7 +125,7 @@ def listar_actividades_abiertas():
 
 
 def inscribir_estudiante():
-    print("\n--- INSCRIBIR ESTUDIANTE A ACTIVIDAD ---")
+    print("\nInscribir estudiante a una actividad")
 
     listar_estudiantes_activos()
 
@@ -233,12 +220,7 @@ def inscribir_estudiante():
             estado_inscripcion = "lista_espera"
 
         consulta_insert = """
-            INSERT INTO inscripciones (
-                id_estudiante,
-                id_actividad,
-                fecha_inscripcion,
-                estado
-            )
+            INSERT INTO inscripciones (id_estudiante,id_actividad,fecha_inscripcion,estado)
             VALUES (%s, %s, CURDATE(), %s);
         """
 
@@ -287,7 +269,7 @@ def promover_lista_espera(cursor, id_actividad):
 
 
 def cancelar_inscripcion():
-    print("\n--- CANCELAR INSCRIPCIÓN ---")
+    print("\n Cancelar inscripciones")
 
     try:
         id_inscripcion = int(input("Ingrese ID de la inscripción: "))
@@ -352,7 +334,7 @@ def cancelar_inscripcion():
 
 
 def ver_lista_espera_por_actividad():
-    print("\n--- LISTA DE ESPERA POR ACTIVIDAD ---")
+    print("\nLista de espera")
 
     try:
         id_actividad = int(input("Ingrese ID de la actividad: "))
@@ -370,12 +352,7 @@ def ver_lista_espera_por_actividad():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                i.id_inscripcion,
-                e.documento,
-                e.nombre,
-                e.apellido,
-                i.fecha_inscripcion
+            SELECT i.id_inscripcion,e.documento,e.nombre,e.apellido,i.fecha_inscripcion
             FROM inscripciones i
             JOIN estudiantes e ON i.id_estudiante = e.id_estudiante
             WHERE i.id_actividad = %s
@@ -389,7 +366,7 @@ def ver_lista_espera_por_actividad():
         if len(lista_espera) == 0:
             print("No hay estudiantes en lista de espera para esta actividad.")
         else:
-            print("\n--- ESTUDIANTES EN LISTA DE ESPERA ---")
+            print("\nEstudiantes en lista de espera:")
             for inscripcion in lista_espera:
                 print(f"ID inscripción: {inscripcion[0]}")
                 print(f"Estudiante: {inscripcion[2]} {inscripcion[3]}")

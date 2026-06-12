@@ -3,7 +3,7 @@ from mysql.connector import Error
 
 
 def mostrar_menu_espacios():
-    print("\n===== GESTIÓN DE ESPACIOS DEPORTIVOS =====")
+    print("\nGestion de espacios")
     print("1. Listar espacios")
     print("2. Buscar espacio por ID")
     print("3. Agregar espacio")
@@ -34,7 +34,7 @@ def listar_espacios():
         if len(espacios) == 0:
             print("\nNo hay espacios registrados.")
         else:
-            print("\n--- LISTADO DE ESPACIOS ---")
+            print("\n Listar espacios")
             for espacio in espacios:
                 print(f"ID: {espacio[0]}")
                 print(f"Nombre: {espacio[1]}")
@@ -97,7 +97,7 @@ def buscar_espacio_por_id():
 
 
 def agregar_espacio():
-    print("\n--- AGREGAR ESPACIO ---")
+    print("\n Agregar espacio")
 
     nombre = input("Nombre: ").strip()
     ubicacion = input("Ubicación: ").strip()
@@ -129,12 +129,7 @@ def agregar_espacio():
         cursor = conexion.cursor()
 
         consulta = """
-            INSERT INTO espacios (
-                nombre,
-                ubicacion,
-                capacidad,
-                estado
-            )
+            INSERT INTO espacios (nombre,ubicacion,capacidad,estado)
             VALUES (%s, %s, %s, 'activo');
         """
 
@@ -154,7 +149,7 @@ def agregar_espacio():
 
 
 def modificar_espacio():
-    print("\n--- MODIFICAR ESPACIO ---")
+    print("\nModificar espacios")
 
     try:
         id_espacio = int(input("Ingrese ID del espacio a modificar: "))
@@ -238,7 +233,7 @@ def modificar_espacio():
 
 
 def dar_baja_espacio():
-    print("\n--- DAR DE BAJA ESPACIO ---")
+    print("\nDar un espacio de baja")
 
     try:
         id_espacio = int(input("Ingrese ID del espacio: "))

@@ -3,7 +3,7 @@ from mysql.connector import Error
 
 
 def mostrar_reportes():
-    print("\n===== REPORTES =====")
+    print("\nReportes")
     print("1. Actividades con mayor cantidad de inscriptos confirmados")
     print("2. Actividades con cupos disponibles")
     print("3. Cantidad de inscriptos por disciplina deportiva")
@@ -28,22 +28,18 @@ def actividades_mayor_cantidad_confirmados():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                a.id_actividad,
-                a.nombre,
-                COUNT(i.id_inscripcion) AS cantidad_confirmados
+            SELECT a.id_actividad,a.nombre,COUNT(i.id_inscripcion) AS cantidad_confirmados
             FROM actividades a
             JOIN inscripciones i 
                 ON a.id_actividad = i.id_actividad
                 AND i.estado = 'confirmada'
             GROUP BY a.id_actividad, a.nombre
-            ORDER BY cantidad_confirmados DESC, a.nombre;
+            ORDER BY cantidad_confirmados DESC;
         """
 
         cursor.execute(consulta)
         resultados = cursor.fetchall()
 
-        print("\n--- ACTIVIDADES CON MAYOR CANTIDAD DE INSCRIPTOS CONFIRMADOS ---")
 
         for fila in resultados:
             print(f"ID actividad: {fila[0]}")
@@ -71,12 +67,7 @@ def actividades_con_cupos_disponibles():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                a.id_actividad,
-                a.nombre,
-                a.cupo_maximo,
-                COUNT(i.id_inscripcion) AS confirmados,
-                a.cupo_maximo - COUNT(i.id_inscripcion) AS cupos_disponibles
+            SELECT a.id_actividad,a.nombre,a.cupo_maximo,COUNT(i.id_inscripcion) AS confirmados,a.cupo_maximo - COUNT(i.id_inscripcion) AS cupos_disponibles
             FROM actividades a
             LEFT JOIN inscripciones i 
                 ON a.id_actividad = i.id_actividad
@@ -88,8 +79,6 @@ def actividades_con_cupos_disponibles():
 
         cursor.execute(consulta)
         resultados = cursor.fetchall()
-
-        print("\n--- ACTIVIDADES CON CUPOS DISPONIBLES ---")
 
         for fila in resultados:
             print(f"ID actividad: {fila[0]}")
@@ -119,10 +108,7 @@ def inscriptos_por_disciplina():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                d.id_disciplina,
-                d.nombre,
-                COUNT(i.id_inscripcion) AS cantidad_confirmados
+            SELECT d.id_disciplina,d.nombre,COUNT(i.id_inscripcion) AS cantidad_confirmados
             FROM disciplinas d
             LEFT JOIN actividades a 
                 ON d.id_disciplina = a.id_disciplina
@@ -136,7 +122,6 @@ def inscriptos_por_disciplina():
         cursor.execute(consulta)
         resultados = cursor.fetchall()
 
-        print("\n--- CANTIDAD DE INSCRIPTOS CONFIRMADOS POR DISCIPLINA ---")
 
         for fila in resultados:
             print(f"ID disciplina: {fila[0]}")
@@ -164,10 +149,7 @@ def inscriptos_por_carrera_y_facultad():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                f.nombre AS facultad,
-                c.nombre AS carrera,
-                COUNT(i.id_inscripcion) AS cantidad_confirmados
+            SELECT f.nombre AS facultad,c.nombre AS carrera,COUNT(i.id_inscripcion) AS cantidad_confirmados
             FROM facultades f
             JOIN carreras c 
                 ON f.id_facultad = c.id_facultad
@@ -183,7 +165,7 @@ def inscriptos_por_carrera_y_facultad():
         cursor.execute(consulta)
         resultados = cursor.fetchall()
 
-        print("\n--- CANTIDAD DE INSCRIPTOS CONFIRMADOS POR CARRERA Y FACULTAD ---")
+        print("\nCantidad de inscipriptos confirmados")
 
         for fila in resultados:
             print(f"Facultad: {fila[0]}")
@@ -211,12 +193,7 @@ def porcentaje_ocupacion_por_actividad():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                a.id_actividad,
-                a.nombre,
-                a.cupo_maximo,
-                COUNT(i.id_inscripcion) AS confirmados,
-                ROUND((COUNT(i.id_inscripcion) / a.cupo_maximo) * 100, 2) AS porcentaje_ocupacion
+            SELECT a.id_actividad,a.nombre,a.cupo_maximo,COUNT(i.id_inscripcion) AS confirmados,ROUND((COUNT(i.id_inscripcion) / a.cupo_maximo) * 100, 2) AS porcentaje_ocupacion
             FROM actividades a
             LEFT JOIN inscripciones i 
                 ON a.id_actividad = i.id_actividad
@@ -228,7 +205,7 @@ def porcentaje_ocupacion_por_actividad():
         cursor.execute(consulta)
         resultados = cursor.fetchall()
 
-        print("\n--- PORCENTAJE DE OCUPACIÓN POR ACTIVIDAD ---")
+        print("\nPorcentaje de ocupacion")
 
         for fila in resultados:
             print(f"ID actividad: {fila[0]}")
@@ -258,15 +235,7 @@ def porcentaje_asistencia_por_actividad():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                a.id_actividad,
-                a.nombre,
-                COUNT(asi.id_asistencia) AS total_registros,
-                SUM(CASE WHEN asi.estado = 'presente' THEN 1 ELSE 0 END) AS presentes,
-                ROUND(
-                    (SUM(CASE WHEN asi.estado = 'presente' THEN 1 ELSE 0 END) / COUNT(asi.id_asistencia)) * 100,
-                    2
-                ) AS porcentaje_asistencia
+            SELECT a.id_actividad,a.nombre,COUNT(asi.id_asistencia) AS total_registros,SUM(CASE WHEN asi.estado = 'presente' THEN 1 ELSE 0 END) AS presentes,ROUND((SUM(CASE WHEN asi.estado = 'presente' THEN 1 ELSE 0 END) / COUNT(asi.id_asistencia)) * 100,2) AS porcentaje_asistencia
             FROM actividades a
             JOIN inscripciones i 
                 ON a.id_actividad = i.id_actividad
@@ -279,7 +248,7 @@ def porcentaje_asistencia_por_actividad():
         cursor.execute(consulta)
         resultados = cursor.fetchall()
 
-        print("\n--- PORCENTAJE DE ASISTENCIA POR ACTIVIDAD ---")
+        print("\nPorcentaje de asistencia segun actividad")
 
         if len(resultados) == 0:
             print("No hay asistencias registradas para calcular porcentajes.")
@@ -312,12 +281,7 @@ def estudiantes_tres_o_mas_inasistencias():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                e.id_estudiante,
-                e.documento,
-                e.nombre,
-                e.apellido,
-                COUNT(asi.id_asistencia) AS cantidad_inasistencias
+            SELECT e.id_estudiante,e.documento,e.nombre,e.apellido,COUNT(asi.id_asistencia) AS cantidad_inasistencias
             FROM estudiantes e
             JOIN inscripciones i 
                 ON e.id_estudiante = i.id_estudiante
@@ -332,7 +296,7 @@ def estudiantes_tres_o_mas_inasistencias():
         cursor.execute(consulta)
         resultados = cursor.fetchall()
 
-        print("\n--- ESTUDIANTES CON TRES O MÁS INASISTENCIAS ---")
+        print("\nEstudiantes con 3 o mas asistencias")
 
         if len(resultados) == 0:
             print("No hay estudiantes con tres o más inasistencias.")
@@ -364,10 +328,7 @@ def actividades_con_lista_espera():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                a.id_actividad,
-                a.nombre,
-                COUNT(i.id_inscripcion) AS cantidad_lista_espera
+            SELECT a.id_actividad,a.nombre,COUNT(i.id_inscripcion) AS cantidad_lista_espera
             FROM actividades a
             JOIN inscripciones i 
                 ON a.id_actividad = i.id_actividad
@@ -379,7 +340,7 @@ def actividades_con_lista_espera():
         cursor.execute(consulta)
         resultados = cursor.fetchall()
 
-        print("\n--- ACTIVIDADES CON ESTUDIANTES EN LISTA DE ESPERA ---")
+        print("\nActividades con estudiantes en lista de espera")
 
         if len(resultados) == 0:
             print("No hay actividades con estudiantes en lista de espera.")
@@ -410,12 +371,7 @@ def estudiantes_en_mas_de_una_actividad():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                e.id_estudiante,
-                e.documento,
-                e.nombre,
-                e.apellido,
-                COUNT(i.id_inscripcion) AS cantidad_actividades
+            SELECT e.id_estudiante,e.documento,e.nombre,e.apellido,COUNT(i.id_inscripcion) AS cantidad_actividades
             FROM estudiantes e
             JOIN inscripciones i 
                 ON e.id_estudiante = i.id_estudiante
@@ -428,7 +384,7 @@ def estudiantes_en_mas_de_una_actividad():
         cursor.execute(consulta)
         resultados = cursor.fetchall()
 
-        print("\n--- ESTUDIANTES INSCRIPTOS EN MÁS DE UNA ACTIVIDAD ---")
+        print("\nEstudiantes inscriptos a mas de una actividad")
 
         if len(resultados) == 0:
             print("No hay estudiantes confirmados en más de una actividad.")
@@ -460,31 +416,26 @@ def actividades_sin_inscriptos_confirmados():
         cursor = conexion.cursor()
 
         consulta = """
-            SELECT 
-                a.id_actividad,
-                a.nombre,
-                a.estado
+            SELECT a.id_actividad,a.nombre as Actividad,a.estado
             FROM actividades a
             LEFT JOIN inscripciones i 
                 ON a.id_actividad = i.id_actividad
                 AND i.estado = 'confirmada'
-            WHERE i.id_inscripcion IS NULL
-            ORDER BY a.nombre;
+            WHERE i.id_inscripcion IS NULL;
         """
 
         cursor.execute(consulta)
         resultados = cursor.fetchall()
 
-        print("\n--- ACTIVIDADES SIN INSCRIPTOS CONFIRMADOS ---")
+        print("\nActividades sin estudiantes inscriptos")
 
         if len(resultados) == 0:
-            print("Todas las actividades tienen al menos un inscripto confirmado.")
+            print("No hay actividades vacias")
         else:
             for fila in resultados:
                 print(f"ID actividad: {fila[0]}")
                 print(f"Actividad: {fila[1]}")
                 print(f"Estado: {fila[2]}")
-                print("-" * 40)
 
         cursor.close()
 

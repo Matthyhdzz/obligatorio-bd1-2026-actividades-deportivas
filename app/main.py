@@ -8,7 +8,7 @@ from reportes import menu_reportes
 
 
 def mostrar_menu_principal():
-    print("===== SISTEMA DE GESTIÓN=====")
+    print("SISTEMA DE GESTIÓN")
     print("1. Gestión de estudiantes")
     print("2. Gestión de disciplinas deportivas")
     print("3. Gestión de espacios deportivos")
